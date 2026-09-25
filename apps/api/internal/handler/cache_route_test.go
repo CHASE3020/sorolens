@@ -15,6 +15,7 @@ import (
 	"github.com/sorolens/sorolens/apps/api/internal/middleware"
 	"github.com/sorolens/sorolens/apps/api/internal/router"
 	"github.com/sorolens/sorolens/apps/api/internal/store"
+	"github.com/sorolens/sorolens/apps/api/internal/config"
 )
 
 func newCachedServer(t *testing.T, ms *store.MockStore) http.Handler {
@@ -30,7 +31,7 @@ func newCachedServer(t *testing.T, ms *store.MockStore) http.Handler {
 		Logger:      slog.New(slog.NewTextHandler(io.Discard, nil)),
 		Cache:       &middleware.RedisCache{Client: client},
 		CacheTTL:    30 * time.Second,
-	})
+	}, config.DefaultRequestMaxBodyBytes)
 }
 
 func TestResponseCacheOnContractRoutes(t *testing.T) {

@@ -1,4 +1,9 @@
+import re
 
+with open("apps/web/app/(app)/layout.tsx", "r") as f:
+    content = f.read()
+
+new_content = """
 "use client";
 
 import Link from "next/link";
@@ -7,17 +12,17 @@ import { NetworkSelector } from "@/components/NetworkSelector";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CmdkSearch } from "@/components/CmdkSearch";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { OfflineAlertBanner as OfflineBanner } from "@/components/OfflineAlertBanner";
+import { OfflineBanner } from "@/components/OfflineBanner";
 import { PushSubscribeButton } from "@/components/PushSubscribeButton";
-import { useOfflineAlertQueue } from "@/hooks/useOfflineAlertQueue";
+import { useOfflineAlertQueue } from "@/lib/alertQueue";
 
 function AppLayoutInner({ children }: { children: React.ReactNode }) {
-  const { isOffline, pending, dismiss, dismissAll } = useOfflineAlertQueue();
+  const { isOffline, pending } = useOfflineAlertQueue();
   
   return (
     <>
       <CmdkSearch />
-      <OfflineBanner pending={pending} isOffline={isOffline} onDismiss={dismiss} onDismissAll={dismissAll} />
+      <OfflineBanner isOffline={isOffline} pendingCount={pending.length} />
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <header className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <Link
@@ -82,3 +87,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     </NetworkProvider>
   );
 }
+"""
+
+with open("apps/web/app/(app)/layout.tsx", "w") as f:
+    f.write(new_content)
