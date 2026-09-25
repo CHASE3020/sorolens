@@ -1,8 +1,8 @@
 package handler_test
 
 import (
-	"context"
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -10,24 +10,27 @@ import (
 
 	"github.com/sorolens/sorolens/apps/api/internal/handler"
 	"github.com/sorolens/sorolens/apps/api/internal/router"
-	"time"
 	"github.com/sorolens/sorolens/apps/api/internal/store"
 	"log/slog"
 	"os"
+	"time"
 )
 
 type mockRedisClient struct{}
+
 func (m *mockRedisClient) Incr(ctx context.Context, key string) (int64, error) { return 1, nil }
-func (m *mockRedisClient) Expire(ctx context.Context, key string, expiration time.Duration) (bool, error) { return true, nil }
+func (m *mockRedisClient) Expire(ctx context.Context, key string, expiration time.Duration) (bool, error) {
+	return true, nil
+}
 
 func newTestHandler(ms *store.MockStore, dbHealthy, redisHealthy bool) http.Handler {
 	logger := slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelError}))
 	h := &handler.Handler{
-		Store:  ms,
-		DB:     &store.MockPinger{Healthy: dbHealthy},
-		Redis:  &store.MockPinger{Healthy: redisHealthy},
+		Store:       ms,
+		DB:          &store.MockPinger{Healthy: dbHealthy},
+		Redis:       &store.MockPinger{Healthy: redisHealthy},
 		RedisClient: &mockRedisClient{},
-		Logger: logger,
+		Logger:      logger,
 	}
 	return router.New(h)
 }

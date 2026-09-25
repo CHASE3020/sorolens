@@ -160,7 +160,8 @@ func makeRequest(method, path string) *http.Request {
 // ---- tests -----------------------------------------------------------------
 
 // TestGetChangelog_200_returnsVersionArray is an end-to-end integration test:
-//   ingestion → store → GET /contracts/{id}/changelog → 200 JSON array.
+//
+//	ingestion → store → GET /contracts/{id}/changelog → 200 JSON array.
 func TestGetChangelog_200_returnsVersionArray(t *testing.T) {
 	h := changelog.New(seededStore())
 
