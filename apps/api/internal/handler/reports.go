@@ -361,7 +361,7 @@ func renderReportPDF(m store.MonthlySLA, signature string) ([]byte, error) {
 		)
 	} else {
 		lines = append(lines,
-			"  Signature    "+signature[:16]+"...",
+			"  Signature    "+signature[:min(16, len(signature))]+"...",
 			"  (full value in the document Info dictionary and the",
 			"   X-Report-Signature response header)",
 		)

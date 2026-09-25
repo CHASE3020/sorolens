@@ -25,6 +25,7 @@ type MockStore struct {
 	watchlist          map[string]map[string]bool
 	alertSubscriptions []AlertSubscription
 	users              map[string]User
+	labels             []Label
 	healthScores       map[string]ContractHealthScore
 	indexerCursors     map[string]uint32
 	contractVersions   map[string][]ContractVersion
